@@ -12,8 +12,14 @@ import java.util.concurrent.locks.ReentrantLock;
 class ShareData {
     private int number = 0;
     private Lock lock = new ReentrantLock();
+
+//    返回绑定到此Lock实例的新Condition实例。
+//    在等待条件之前，锁必须由当前线程持有。调用Condition.await()将在等待之前自动释放锁，并在等待返回之前重新获取锁。
     private Condition condition = lock.newCondition();
 
+    /**
+     * 生产者
+     */
     @SneakyThrows
     public void increment() {
         lock.lock();
@@ -38,6 +44,9 @@ class ShareData {
         }
     }
 
+    /**
+     * 消费者
+     */
     @SneakyThrows
     public void decrement() {
         lock.lock();
@@ -45,7 +54,7 @@ class ShareData {
         try {
 //        1. 判断
             while (number == 0) {
-    //            等待，不能生产
+    //            等待，不能消费
                 condition.await();
             }
 

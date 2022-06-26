@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,7 +18,7 @@ class MyResource {
 
     BlockingQueue<String> blockingQueue = null; // 阻塞队列
 
-    public MyResource(BlockingQueue<String> blockingQueue) {
+    public MyResource(BlockingQueue<String> blockingQueue) { //构造方法,传接口，不传类
         this.blockingQueue = blockingQueue;
         System.out.println(blockingQueue.getClass().getName());
     }
@@ -73,7 +74,8 @@ class MyResource {
 public class ProdConsumer_BlockQueueDemo {
     @SneakyThrows
     public static void main(String[] args) {
-        MyResource myResource = new MyResource(new ArrayBlockingQueue<>(10));
+//        MyResource myResource = new MyResource(new ArrayBlockingQueue<>(10));
+        MyResource myResource = new MyResource(new LinkedBlockingQueue<>(10));
 
         new Thread(()->{
             System.out.println(Thread.currentThread().getName()+"\t 生产线程启动");
